@@ -1,14 +1,12 @@
 package guru.springframework.api.controllers;
 
-import guru.springframework.api.domain.services.ApiService;
+import guru.springframework.api.services.ApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ServerWebExchange;
-
 /**
  * Created by jt on 9/22/17.
  */
@@ -29,7 +27,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String formPost(Model model, ServerWebExchange serverWebExchange){
-
+    /*
         MultiValueMap<String, String> map = serverWebExchange.getFormData().block();
 
         Integer limit = new Integer(map.get("limit").get(0));
@@ -42,7 +40,13 @@ public class UserController {
         }
 
         model.addAttribute("users", apiService.getUsers(limit));
+      */
 
-        return "userlist";
+      model.addAttribute("user",
+                        apiService.
+                                getUsers(serverWebExchange
+                                            .getFormData()
+                                            .map(data -> new Integer(data.getFirst("limit")))));
+      return "userlist";
     }
 }
